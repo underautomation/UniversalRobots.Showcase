@@ -1,0 +1,64 @@
+name: CI
+
+on: 
+  push:
+    tags:
+    - 'v*'
+
+jobs:
+  build:
+
+    runs-on: windows-2022
+
+    steps:
+    - uses: actions/checkout@v1
+    - uses: nuget/setup-nuget@v1
+    - run: nuget restore $Env:GITHUB_WORKSPACE\Showcase_VS2022.sln
+    - name: Build Windows Desktop
+      run: |
+        cd "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\"
+        .\MSBuild.exe $Env:GITHUB_WORKSPACE\Showcase_VS2022.sln -p:Configuration=Release
+        rm $Env:GITHUB_WORKSPACE\Showcase.Desktop\obj -r -fo
+    - name: Build Console example
+      run: |
+        cd "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\"
+        .\MSBuild.exe $Env:GITHUB_WORKSPACE\Showcase.Console\Showcase.Console.csproj /p:DeployOnBuild=true /p:PublishProfile=win-x86 /p:Configuration=Release /p:OutDir=bin/win-x86
+        .\MSBuild.exe $Env:GITHUB_WORKSPACE\Showcase.Console\Showcase.Console.csproj /p:DeployOnBuild=true /p:PublishProfile=win-x64 /p:Configuration=Release /p:OutDir=bin/win-x64
+        .\MSBuild.exe $Env:GITHUB_WORKSPACE\Showcase.Console\Showcase.Console.csproj /p:DeployOnBuild=true /p:PublishProfile=win-arm /p:Configuration=Release /p:OutDir=bin/win-arm
+        .\MSBuild.exe $Env:GITHUB_WORKSPACE\Showcase.Console\Showcase.Console.csproj /p:DeployOnBuild=true /p:PublishProfile=osx-x64 /p:Configuration=Release /p:OutDir=bin/osx-64
+        .\MSBuild.exe $Env:GITHUB_WORKSPACE\Showcase.Console\Showcase.Console.csproj /p:DeployOnBuild=true /p:PublishProfile=linux-arm /p:Configuration=Release /p:OutDir=bin/linux-arm
+        .\MSBuild.exe $Env:GITHUB_WORKSPACE\Showcase.Console\Showcase.Console.csproj /p:DeployOnBuild=true /p:PublishProfile=linux-x64 /p:Configuration=Release /p:OutDir=bin/linux-x64
+        rm $Env:GITHUB_WORKSPACE\Showcase.Console\obj -r -fo
+    - name: zip desktop example
+      run: |
+        cd "$Env:GITHUB_WORKSPACE\Showcase.Desktop\bin\Release\"
+        7z a -tzip -mx=9 $Env:GITHUB_WORKSPACE\UnderAutomation.UniversalRobots.Showcase.Desktop.zip *
+    - name: zip win-x86
+      run: |
+        cd "$Env:GITHUB_WORKSPACE\Showcase.Console\bin\win-x86\"
+        7z a -tzip -mx=9 $Env:GITHUB_WORKSPACE\UnderAutomation.UniversalRobots.Showcase.Console.win-x86.zip *
+    - name: zip win-x64
+      run: |
+        cd "$Env:GITHUB_WORKSPACE\Showcase.Console\bin\win-x64\"
+        7z a -tzip -mx=9 $Env:GITHUB_WORKSPACE\UnderAutomation.UniversalRobots.Showcase.Console.win-x64.zip *
+    - name: zip win-arm
+      run: |
+        cd "$Env:GITHUB_WORKSPACE\Showcase.Console\bin\win-arm\"
+        7z a -tzip -mx=9 $Env:GITHUB_WORKSPACE\UnderAutomation.UniversalRobots.Showcase.Console.win-arm.zip *
+    - name: zip osx-64
+      run: |
+        cd "$Env:GITHUB_WORKSPACE\Showcase.Console\bin\osx-64\"
+        7z a -tzip -mx=9 
+        $Env:GITHUB_WORKSPACE\UnderAutomation.UniversalRobots.Showcase.Console.osx-64.zip *
+    - name: zip linux-arm
+      run: |
+        cd "$Env:GITHUB_WORKSPACE\Showcase.Console\bin\linux-arm\"
+        7z a -tzip -mx=9 $Env:GITHUB_WORKSPACE\UnderAutomation.UniversalRobots.Showcase.Console.linux-arm.zip *
+    - name: zip linux-x64
+      run: |
+        cd "$Env:GITHUB_WORKSPACE\Showcase.Console\bin\linux-x64\"
+        7z a -tzip -mx=9 $Env:GITHUB_WORKSPACE\UnderAutomation.UniversalRobots.Showcase.Console.linux-x64.zip *
+    - uses: ncipollo/release-action@v1
+      with:
+        artifacts: "UnderAutomation.UniversalRobots.Showcase.Desktop.zip,UnderAutomation.UniversalRobots.Showcase.Console.win-x86.zip,UnderAutomation.UniversalRobots.Showcase.Console.win-x64.zip,UnderAutomation.UniversalRobots.Showcase.Console.win-arm.zip,UnderAutomation.UniversalRobots.Showcase.Console.osx-64.zip,UnderAutomation.UniversalRobots.Showcase.Console.linux-arm.zip,UnderAutomation.UniversalRobots.Showcase.Console.linux-x64.zip"
+        token: ${{ secrets.GITHUB_TOKEN }}
