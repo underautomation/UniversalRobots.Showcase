@@ -48,8 +48,7 @@ jobs:
     - name: zip osx-64
       run: |
         cd "$Env:GITHUB_WORKSPACE\Showcase.Console\bin\osx-64\"
-        7z a -tzip -mx=9 
-        $Env:GITHUB_WORKSPACE\UnderAutomation.UniversalRobots.Showcase.Console.osx-64.zip *
+        7z a -tzip -mx=9 $Env:GITHUB_WORKSPACE\UnderAutomation.UniversalRobots.Showcase.Console.osx-64.zip *
     - name: zip linux-arm
       run: |
         cd "$Env:GITHUB_WORKSPACE\Showcase.Console\bin\linux-arm\"
