@@ -32,7 +32,8 @@ public partial class ConnectControl : UserControl, IUserControl
         udXmlRpcPort.Value = parameters.XmlRpc.Port;
         chkSsh.Checked = parameters.Ssh.EnableSsh;
         chkSftp.Checked = parameters.Ssh.EnableSftp;
-        txtUsername.Text = parameters.Ssh.Username;
+        cbUsername.ResetText();
+        cbUsername.SelectedText = parameters.Ssh.Username;
         txtPassword.Text = parameters.Ssh.Password;
         chkSocket.Checked = parameters.SocketCommunication.Enable;
         udSocketPort.Value = parameters.SocketCommunication.Port;
@@ -79,7 +80,7 @@ public partial class ConnectControl : UserControl, IUserControl
         parameters.XmlRpc.Port = (int)udXmlRpcPort.Value;
         parameters.Ssh.EnableSsh = chkSsh.Checked;
         parameters.Ssh.EnableSftp = chkSftp.Checked;
-        parameters.Ssh.Username = txtUsername.Text;
+        parameters.Ssh.Username = cbUsername.Text;
         parameters.Ssh.Password = txtPassword.Text;
         parameters.SocketCommunication.Enable = chkSocket.Checked;
         parameters.SocketCommunication.Port = (int)udSocketPort.Value;

@@ -33,7 +33,7 @@ partial class ConnectControl
             this.chkSftp = new System.Windows.Forms.CheckBox();
             this.chkSsh = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.txtUsername = new System.Windows.Forms.TextBox();
+            this.cbUsername = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.btnConnect = new System.Windows.Forms.Button();
@@ -141,14 +141,17 @@ partial class ConnectControl
             this.label2.TabIndex = 0;
             this.label2.Text = "Login :";
             // 
-            // txtUsername
+            // cbUsername
             // 
-            this.txtUsername.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.txtUsername.Location = new System.Drawing.Point(83, 344);
-            this.txtUsername.Name = "txtUsername";
-            this.txtUsername.Size = new System.Drawing.Size(80, 20);
-            this.txtUsername.TabIndex = 10;
-            this.txtUsername.Text = "ur";
+            this.cbUsername.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.cbUsername.Items.AddRange(new object[] {
+            "ur",
+            "root"});
+            this.cbUsername.Location = new System.Drawing.Point(83, 344);
+            this.cbUsername.Name = "cbUsername";
+            this.cbUsername.Size = new System.Drawing.Size(80, 21);
+            this.cbUsername.TabIndex = 10;
+            this.cbUsername.TextChanged += new System.EventHandler(this.cbUsername_TextChanged);
             // 
             // label3
             // 
@@ -392,7 +395,7 @@ partial class ConnectControl
             this.tableLayoutPanel1.Controls.Add(this.chkPrimaryInterface, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.chkDashboard, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.udXmlRpcPort, 1, 12);
-            this.tableLayoutPanel1.Controls.Add(this.txtUsername, 1, 16);
+            this.tableLayoutPanel1.Controls.Add(this.cbUsername, 1, 16);
             this.tableLayoutPanel1.Controls.Add(this.chkSocket, 1, 8);
             this.tableLayoutPanel1.Controls.Add(this.chkXmlRpc, 1, 11);
             this.tableLayoutPanel1.Controls.Add(this.label4, 0, 12);
@@ -577,7 +580,7 @@ partial class ConnectControl
     private System.Windows.Forms.CheckBox chkSftp;
     private System.Windows.Forms.CheckBox chkSsh;
     private System.Windows.Forms.Label label2;
-    private System.Windows.Forms.TextBox txtUsername;
+    private System.Windows.Forms.ComboBox cbUsername;
     private System.Windows.Forms.Label label3;
     private System.Windows.Forms.TextBox txtPassword;
     private System.Windows.Forms.Button btnConnect;
