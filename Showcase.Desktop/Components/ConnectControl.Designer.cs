@@ -151,7 +151,6 @@ partial class ConnectControl
             this.cbUsername.Name = "cbUsername";
             this.cbUsername.Size = new System.Drawing.Size(80, 21);
             this.cbUsername.TabIndex = 10;
-            this.cbUsername.TextChanged += new System.EventHandler(this.cbUsername_TextChanged);
             // 
             // label3
             // 
